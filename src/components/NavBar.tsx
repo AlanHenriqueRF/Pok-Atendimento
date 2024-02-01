@@ -43,6 +43,7 @@ export default function NavBar() {
 }
 
 const Blocknav = styled.div`
+    width: 100%;
     height: 104px;
     display: flex;
     align-items: center;
