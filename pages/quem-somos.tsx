@@ -1,6 +1,9 @@
+import Cabecalho from "../src/components/cabecalho"
+
 export default function QuemSomos(){
     return (
     <>
-        <h1> alou alou graças a deus</h1>
+        <Cabecalho nome={'Quem somos'} info={'A maior rede de tratamento pokémon.'}></Cabecalho>
+        
     </>)
 }
