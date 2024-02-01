@@ -6,15 +6,15 @@ import pokeHero from "../public/images/pokemon-hero.jpg"
 export default function Home() {
   return (
     <>
-      <Container>
+      <ContainerHome>
         <img src={pokeHero.src} alt="" />
         <h1>Cuidamos bem do seu pokémon,<br/> 
         para ele cuidar bem de você</h1>
-      </Container>
+      </ContainerHome>
     </>)
 }
 
-const Container = styled.div`
+const ContainerHome = styled.div`
   height: calc(100vh - 176px);
   width: 100vw;
   display: flex;
