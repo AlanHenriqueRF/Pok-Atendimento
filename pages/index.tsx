@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <>
       <ContainerHome>
-        <img src={pokeHero.src} alt="" />
+        <image  href={pokeHero.src}/>
         <h1>Cuidamos bem do seu pokémon,<br/> 
         para ele cuidar bem de você</h1>
       </ContainerHome>

@@ -21,7 +21,7 @@ export default function NavBar() {
             <Blocknav>
                 <PokemonLogo tamanho={aberto ? '259px' : '62px'} onMouseOver={() => { setAberto(true) }} onMouseOut={() => setAberto(false)}>
                     <Link href='/'>
-                        <img src={logo.src} alt="" />
+                        <image  href={logo.src} />
                         {aberto ? <h1>Centro Pokémon </h1> : <></>}
                     </Link>
                 </PokemonLogo>
