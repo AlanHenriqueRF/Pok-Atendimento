@@ -1,4 +1,4 @@
-import Cabecalho from "../../src/components/cabecalho"
+import Cabecalho from "../../src/components/Cabecalho"
 
 export default function Sucesso(){
     return (

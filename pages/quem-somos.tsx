@@ -1,5 +1,5 @@
 import { styled } from "styled-components"
-import Cabecalho from "../src/components/cabecalho"
+import Cabecalho from "../src/components/Cabecalho"
 
 export default function QuemSomos() {
     return (

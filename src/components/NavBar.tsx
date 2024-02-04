@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import favicon from '../../public/favicon.ico'
 import logo from '../../public/images/white-pokeball.svg'
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -13,7 +12,6 @@ export default function NavBar() {
 
     useEffect(() => {
         setTimeout(() => {
-            console.log('deu 5')
             setAberto(false)
         }, 5000)
     }, [])
