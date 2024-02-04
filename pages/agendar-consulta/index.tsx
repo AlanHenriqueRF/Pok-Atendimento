@@ -47,7 +47,39 @@ export default function AgendarConsulta() {
                             }
                         }} ><label>Adicionar novo pokémon ao time...&nbsp;&nbsp;&nbsp;<span>+</span></label></AddPoke>
                     </div>
-                    <button type="submit" value="Enviar"></button>
+                    <HorarioAgenda>
+                        <div>
+                            <label htmlFor="data">Data para Atendimento</label>
+                            <select id="data" name="data">
+                                <option value="data">Selecione uma data</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label htmlFor="hora">Horário de Atendimento</label>
+                            <select id="hora" name="hora">
+                                <option value="hora">Selecione um horário</option>
+                            </select>
+                        </div>
+                    </HorarioAgenda>
+                    <InfoDepagamento>
+                        <div>
+                            <h3>Número de pokémons a serem atendidos:</h3>
+                            <h3>Atendimento unitário por pokémon: </h3>
+                            <h3>Subtotal:</h3>
+                            <h3>Taxa geracional*: </h3>
+                            <p>*adicionamos uma taxa de 3%, multiplicado pelo número da geração mais alta do time, com limite de até 30%</p>
+                        </div>
+                        <div className="finalpag">
+                            <h3>01</h3>
+                            <h3>R$ 70,00</h3>
+                            <h3>R$ 70,00</h3>
+                            <h3>R$ 2,10</h3>
+                        </div>
+                    </InfoDepagamento>
+                    <Finalform>
+                        <h1>Valor Total: R$ 72,10</h1>
+                        <button type="submit" value="Enviar">Concluir Agendamento</button>
+                    </Finalform>
                 </form>
             </ContainerForm>
         </>
@@ -142,4 +174,62 @@ const AddPoke = styled.button`
         line-height: 19.36px;
     }
 
+`
+
+const HorarioAgenda = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 32px;
+    border-bottom: 1px #D5D5D5 solid;
+    padding-bottom: 32px;
+    margin-bottom: 32px;
+    div {
+        display: flex;
+        flex-direction: column;
+        margin-right: 18px;
+        label {
+            margin-bottom: 8px;
+        }
+    }
+
+`
+
+const InfoDepagamento = styled.div`
+    display: flex;
+    color:#747474;
+    font-weight: 400;
+    justify-content: space-between;
+    h3{
+        font-size:14px;
+        line-height: 16.94px;
+        margin-bottom: 8px;
+    }
+    p{
+        font-size:8px;
+        line-height: 9.68px;
+        margin-bottom: 32px;
+    }
+    div{
+        &.finalpag{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+    }
+`
+
+const Finalform = styled.div`
+    display:flex;
+    justify-content: space-between;
+    button{
+        width: 183px;
+        height: 42px;
+        border-radius: 30px;
+        background-color: #E40F0F;
+        color: #FFFFFF;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 16.94px;
+        border: none;
+    }
 `
