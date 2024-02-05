@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const { parsed: localEnv } = require('dotenv').config()
+
 const nextConfig = {
   reactStrictMode: true,
   compiler: {
@@ -6,4 +8,10 @@ const nextConfig = {
   }
 }
 
-module.exports = nextConfig
+module.exports = {
+  ...nextConfig,
+  env: {
+    API_LOCAL_URL: localEnv.API_LOCAL_URL,
+    API_POKEMON_URL: localEnv.API_POKEMON_URL,
+  },
+}

@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/schemas/.form.schema.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/schemas/.form.schema.ts", "src/service/local.ts"],
   "exclude": ["node_modules"]
 }

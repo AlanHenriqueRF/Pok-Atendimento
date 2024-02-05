@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import PokemonComponent from "../../src/components/Pokemons";
 import { yupResolver } from "@hookform/resolvers/yup";
+import apiTimeDate from "../../src/service/local";
 /* import schema from "../../src/schemas/form.schema";
 
 interface FormInputs {
@@ -22,7 +23,9 @@ interface FormInputs {
 } */
 
 export default function AgendarConsulta() {
-    const [numpoke, setNumpoke] = useState(['Pokémon 01'])
+    const [numpoke, setNumpoke] = useState(['Pokémon 01']);
+    const [date, setDate] = useState([]);
+    const [horario, setHorario] = useState([])
     /* const { register, handleSubmit, formState: { errors }, reset } = useForm<FormInputs>({
         resolver: yupResolver(schema),
       }); */
@@ -32,10 +35,19 @@ export default function AgendarConsulta() {
         reset();
     }; */
 
-    function handleSubmit (e: React.FormEvent<HTMLFormElement>){
+    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         console.log('Enviou')
     }
+
+    useEffect(() => {
+        apiTimeDate.getDate()
+            .then((data) => { setDate(data.data) })
+            .catch((e) => { console.log(e.response.data) })
+        apiTimeDate.getTime()
+            .then((data)=>{console.log(data);setHorario(data.data)})
+            .catch(e=>{console.log(e.response.data)})
+    }, [])
 
     return (
         <>
@@ -69,7 +81,7 @@ export default function AgendarConsulta() {
                         <label htmlFor="Pokémon 01">Cadastre seu time</label>
                         <h2>Atendemos até 06 pokémons por vez</h2>
                         <ul>
-                            {numpoke.length > 0 && numpoke.length <= 6 && numpoke.map((nome, index) => <PokemonComponent key={index} nome={nome} /* register={register} *//>)}
+                            {numpoke.length > 0 && numpoke.length <= 6 && numpoke.map((nome, index) => <PokemonComponent key={index} nome={nome} /* register={register} */ />)}
                         </ul>
                         <AddPoke onClick={() => {
                             if (numpoke.length < 6) {
@@ -84,12 +96,18 @@ export default function AgendarConsulta() {
                             <label htmlFor="data">Data para Atendimento</label>
                             <select id="data" /* {...register("data")} */ required>
                                 <option value="data">Selecione uma data</option>
+                                {date && date.map((i) => (
+                                    <option value={i}>{i}</option>
+                                ))}
                             </select>
                         </div>
                         <div>
                             <label htmlFor="hora">Horário de Atendimento</label>
-                            <select id="hora" /* {...register("hora")}  */required>
+                            <select id="hora" /* {...register("hora")}  */ required>
                                 <option value="hora">Selecione um horário</option>
+                                {horario && horario.map((i) => (
+                                    <option value={i}>{i}</option>
+                                ))}
                             </select>
                         </div>
                     </HorarioAgenda>
