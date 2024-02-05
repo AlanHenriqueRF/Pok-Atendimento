@@ -3,15 +3,16 @@ import { styled } from "styled-components"
 interface PokeProps {
     nome: string
     key: number
+    /* register: any */
 }
 
 export default function PokemonComponent(props: PokeProps) {
-    const { nome } = props
+    const { nome,/* register */ } = props
     return (
         <>
             <SelecaoPoke>
                 <label htmlFor={nome}>{nome}</label>
-                <select className='tamahodiferente' id={nome} name={nome}>
+                <select className='tamahodiferente' id={nome} /* {...register("pokémon1")} */ required>
                     <option value="Bulbasaur">Bulbasaur</option>
                 </select>
             </SelecaoPoke>

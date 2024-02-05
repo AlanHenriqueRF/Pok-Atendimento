@@ -1,31 +1,63 @@
 import { styled } from "styled-components";
 import Cabecalho from "../../src/components/Cabecalho";
+import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import PokemonComponent from "../../src/components/Pokemons";
+import { yupResolver } from "@hookform/resolvers/yup";
+/* import schema from "../../src/schemas/form.schema";
+
+interface FormInputs {
+    nome: string
+    sobrenome: string
+    região: string
+    cidade: string
+    pokémon1: string
+    pokémon2?: string
+    pokémon3?: string
+    pokémon4?: string
+    pokémon5?: string
+    pokémon6?: string
+    data: string
+    hora: string
+} */
 
 export default function AgendarConsulta() {
     const [numpoke, setNumpoke] = useState(['Pokémon 01'])
+    /* const { register, handleSubmit, formState: { errors }, reset } = useForm<FormInputs>({
+        resolver: yupResolver(schema),
+      }); */
+
+    /* function onSubmitHandler(data:FormInputs) {
+        console.log({ data });
+        reset();
+    }; */
+
+    function handleSubmit (e: React.FormEvent<HTMLFormElement>){
+        e.preventDefault()
+        console.log('Enviou')
+    }
 
     return (
         <>
             <Cabecalho nome="Agendar Consulta" info="Recupere seus pokémons em 5 segundos"></Cabecalho>
             <ContainerForm>
                 <h1>Preencha o formulário abaixo para agendar sua consulta</h1>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <InfoBasica>
                         <div>
-                            <label htmlFor='Nome'>Nome</label>
-                            <input type="text" name='Nome' id="Nome" placeholder="Digite seu nome" />
-                            <label htmlFor="Regiao">Região</label>
-                            <select id="Regiao" name="Regiao">
+                            <label htmlFor='nome'>Nome</label>
+                            <input type="text" id="nome" placeholder="Digite seu nome" /* {...register("nome")} */ required />
+                            {/* <p>{errors.nome?.message}</p> */}
+                            <label htmlFor="região">Região</label>
+                            <select id="região" /* {...register("região")} */ required>
                                 <option value="Kanto">Kanto</option>
                             </select>
                         </div>
                         <CidadeContainer>
-                            <label htmlFor='Sobrenome'>Sobrenome</label>
-                            <input type="text" name='Sobrenome' id="Sobrenome" placeholder="Digite seu Sobrenome" />
-                            <label htmlFor="Cidade">Cidade</label>
-                            <select id="Cidade" name="Cidade">
+                            <label htmlFor='sobrenome'>Sobrenome</label>
+                            <input type="text" id="sobrenome" placeholder="Digite seu Sobrenome" /* {...register("sobrenome")} */ required />
+                            <label htmlFor="cidade">Cidade</label>
+                            <select id="cidade" /* {...register("cidade")} */ required>
                                 <option value="Pewter City">Selecione sua cidade</option>
                                 <option value="Pewter City">Pewter City</option>
                                 <option value="Pallet Town">Pallet Town</option>
@@ -37,7 +69,7 @@ export default function AgendarConsulta() {
                         <label htmlFor="Pokémon 01">Cadastre seu time</label>
                         <h2>Atendemos até 06 pokémons por vez</h2>
                         <ul>
-                            {numpoke.length > 0 && numpoke.length <= 6 && numpoke.map((nome, index) => <PokemonComponent key={index} nome={nome} />)}
+                            {numpoke.length > 0 && numpoke.length <= 6 && numpoke.map((nome, index) => <PokemonComponent key={index} nome={nome} /* register={register} *//>)}
                         </ul>
                         <AddPoke onClick={() => {
                             if (numpoke.length < 6) {
@@ -50,13 +82,13 @@ export default function AgendarConsulta() {
                     <HorarioAgenda>
                         <div>
                             <label htmlFor="data">Data para Atendimento</label>
-                            <select id="data" name="data">
+                            <select id="data" /* {...register("data")} */ required>
                                 <option value="data">Selecione uma data</option>
                             </select>
                         </div>
                         <div>
                             <label htmlFor="hora">Horário de Atendimento</label>
-                            <select id="hora" name="hora">
+                            <select id="hora" /* {...register("hora")}  */required>
                                 <option value="hora">Selecione um horário</option>
                             </select>
                         </div>
@@ -78,7 +110,7 @@ export default function AgendarConsulta() {
                     </InfoDepagamento>
                     <Finalform>
                         <h1>Valor Total: R$ 72,10</h1>
-                        <button type="submit" value="Enviar">Concluir Agendamento</button>
+                        <button type="submit" value="Enviar" >Concluir Agendamento</button>
                     </Finalform>
                 </form>
             </ContainerForm>
