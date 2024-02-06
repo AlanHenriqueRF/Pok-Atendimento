@@ -1,11 +1,12 @@
 import { styled } from "styled-components";
 import Cabecalho from "../../src/components/Cabecalho";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import PokemonComponent from "../../src/components/Pokemons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import apiTimeDate from "../../src/service/local";
-/* import schema from "../../src/schemas/form.schema";
+import schema from "../../src/schemas/form.schema";
+import apiPokemon from "../../src/service/poke";
 
 interface FormInputs {
     nome: string
@@ -20,60 +21,77 @@ interface FormInputs {
     pokémon6?: string
     data: string
     hora: string
-} */
+}
+
+export type ObjectNameUrl = {
+    name: string
+    url: string
+}
+
+
 
 export default function AgendarConsulta() {
     const [numpoke, setNumpoke] = useState(['Pokémon 01']);
     const [date, setDate] = useState([]);
-    const [horario, setHorario] = useState([])
-    /* const { register, handleSubmit, formState: { errors }, reset } = useForm<FormInputs>({
+    const [horario, setHorario] = useState([]);
+    const [regiao, setRegiao] = useState([]);
+    const [city, setCity] = useState([]);
+    const { register, handleSubmit, formState: { errors }, reset, watch } = useForm<FormInputs>({
         resolver: yupResolver(schema),
-      }); */
+    });
 
-    /* function onSubmitHandler(data:FormInputs) {
-        console.log({ data });
+    const watchRegion = watch('região');
+
+    const onSubmit: SubmitHandler<FormInputs> = (data) => {
+        console.log(data);
         reset();
-    }; */
-
-    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault()
-        console.log('Enviou')
-    }
+    };
 
     useEffect(() => {
         apiTimeDate.getDate()
             .then((data) => { setDate(data.data) })
             .catch((e) => { console.log(e.response.data) })
         apiTimeDate.getTime()
-            .then((data)=>{console.log(data);setHorario(data.data)})
-            .catch(e=>{console.log(e.response.data)})
-    }, [])
+            .then((data) => { setHorario(data.data) })
+            .catch(e => { console.log(e.response.data) })
+        apiPokemon.getRegion()
+            .then((data) => { setRegiao(data.data.results) })
+            .catch(e => console.log(e.response.data))
+        if (watchRegion !== 'Selecione sua região' && watchRegion) {
+            apiPokemon.getCity(watchRegion)
+                .then((data) => {setCity(data.data.locations) })
+                .catch((e) => { console.log(e.response.data) })
+        }
+    }, [watchRegion])
 
     return (
         <>
             <Cabecalho nome="Agendar Consulta" info="Recupere seus pokémons em 5 segundos"></Cabecalho>
             <ContainerForm>
                 <h1>Preencha o formulário abaixo para agendar sua consulta</h1>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <InfoBasica>
                         <div>
                             <label htmlFor='nome'>Nome</label>
-                            <input type="text" id="nome" placeholder="Digite seu nome" /* {...register("nome")} */ required />
-                            {/* <p>{errors.nome?.message}</p> */}
+                            <input type="text" id="nome" placeholder="Digite seu nome" {...register("nome")} required />
+                            {<p>{errors.nome?.message}</p>}
                             <label htmlFor="região">Região</label>
-                            <select id="região" /* {...register("região")} */ required>
-                                <option value="Kanto">Kanto</option>
+                            <select id="região" {...register("região")} required>
+                                <option value="Selecione sua região">Selecione sua região</option>
+                                {regiao && regiao.map((i: ObjectNameUrl) => (
+                                    <option value={i.name}>{i.name}</option>
+                                ))}
                             </select>
                         </div>
                         <CidadeContainer>
                             <label htmlFor='sobrenome'>Sobrenome</label>
-                            <input type="text" id="sobrenome" placeholder="Digite seu Sobrenome" /* {...register("sobrenome")} */ required />
+                            <input type="text" id="sobrenome" placeholder="Digite seu Sobrenome" {...register("sobrenome")} required />
                             <label htmlFor="cidade">Cidade</label>
-                            <select id="cidade" /* {...register("cidade")} */ required>
+                            <select id="cidade" {...register("cidade")} required>
                                 <option value="Pewter City">Selecione sua cidade</option>
-                                <option value="Pewter City">Pewter City</option>
-                                <option value="Pallet Town">Pallet Town</option>
-                                <option value="Veridian City">Veridian City</option>
+                                {city && city.map((i: ObjectNameUrl) => (
+                                    <option value={i.name}>{i.name}</option>
+                                ))}
                             </select>
                         </CidadeContainer>
                     </InfoBasica>
@@ -81,9 +99,10 @@ export default function AgendarConsulta() {
                         <label htmlFor="Pokémon 01">Cadastre seu time</label>
                         <h2>Atendemos até 06 pokémons por vez</h2>
                         <ul>
-                            {numpoke.length > 0 && numpoke.length <= 6 && numpoke.map((nome, index) => <PokemonComponent key={index} nome={nome} /* register={register} */ />)}
+                            {numpoke.length > 0 && numpoke.length <= 6 && numpoke.map((nome, index) => <PokemonComponent key={index} nome={nome} register={register} watchRegion={watchRegion}/>)}
                         </ul>
-                        <AddPoke onClick={() => {
+                        <AddPoke onClick={(e) => {
+                            e.preventDefault()
                             if (numpoke.length < 6) {
                                 setNumpoke([...numpoke, `Pokémon 0${(numpoke.length + 1)}`]);
                             } else {
@@ -94,7 +113,7 @@ export default function AgendarConsulta() {
                     <HorarioAgenda>
                         <div>
                             <label htmlFor="data">Data para Atendimento</label>
-                            <select id="data" /* {...register("data")} */ required>
+                            <select id="data" {...register("data")} required>
                                 <option value="data">Selecione uma data</option>
                                 {date && date.map((i) => (
                                     <option value={i}>{i}</option>
@@ -103,7 +122,7 @@ export default function AgendarConsulta() {
                         </div>
                         <div>
                             <label htmlFor="hora">Horário de Atendimento</label>
-                            <select id="hora" /* {...register("hora")}  */ required>
+                            <select id="hora" {...register("hora")} required>
                                 <option value="hora">Selecione um horário</option>
                                 {horario && horario.map((i) => (
                                     <option value={i}>{i}</option>

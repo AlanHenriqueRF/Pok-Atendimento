@@ -9,7 +9,6 @@ export default function handler(
         return
     }
     if (req.headers['content-type']?.toLowerCase() !== "application/json" && !req.body.hasOwnProperty("date")) {
-        console.log(req.headers['content-type']?.toLowerCase() !== "application/json")
         res.status(400).end()
         return
     }
