@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import apiTimeDate from "../../src/service/local";
 import schema from "../../src/schemas/form.schema";
 import apiPokemon from "../../src/service/poke";
+import { useRouter } from "next/router";
 
 interface FormInputs {
     nome: string
@@ -36,6 +37,7 @@ export default function AgendarConsulta() {
     const [horario, setHorario] = useState([]);
     const [regiao, setRegiao] = useState([]);
     const [city, setCity] = useState([]);
+    const router = useRouter();
     const { register, handleSubmit, formState: { errors }, reset, watch } = useForm<FormInputs>({
         resolver: yupResolver(schema),
     });
@@ -45,22 +47,23 @@ export default function AgendarConsulta() {
     const onSubmit: SubmitHandler<FormInputs> = (data) => {
         console.log(data);
         reset();
+        router.push('/agendar-consulta/sucesso')
     };
 
     useEffect(() => {
         apiTimeDate.getDate()
             .then((data) => { setDate(data.data) })
-            .catch((e) => { console.log(e.response.data) })
+            .catch((e) => { router.push('/agendar-consulta/falha');console.log(e.response.data) })
         apiTimeDate.getTime()
             .then((data) => { setHorario(data.data) })
-            .catch(e => { console.log(e.response.data) })
+            .catch(e => { router.push('/agendar-consulta/falha');console.log(e.response.data) })
         apiPokemon.getRegion()
             .then((data) => { setRegiao(data.data.results) })
-            .catch(e => console.log(e.response.data))
+            .catch(e => {router.push('/agendar-consulta/falha');console.log(e.response.data)})
         if (watchRegion !== 'Selecione sua região' && watchRegion) {
             apiPokemon.getCity(watchRegion)
-                .then((data) => {setCity(data.data.locations) })
-                .catch((e) => { console.log(e.response.data) })
+                .then((data) => { setCity(data.data.locations) })
+                .catch((e) => { router.push('/agendar-consulta/falha');console.log(e.response.data) })
         }
     }, [watchRegion])
 
@@ -99,7 +102,7 @@ export default function AgendarConsulta() {
                         <label htmlFor="Pokémon 01">Cadastre seu time</label>
                         <h2>Atendemos até 06 pokémons por vez</h2>
                         <ul>
-                            {numpoke.length > 0 && numpoke.length <= 6 && numpoke.map((nome, index) => <PokemonComponent key={index} nome={nome} register={register} watchRegion={watchRegion}/>)}
+                            {numpoke.length > 0 && numpoke.length <= 6 && numpoke.map((nome, index) => <PokemonComponent key={index} nome={nome} register={register} watchRegion={watchRegion} />)}
                         </ul>
                         <AddPoke onClick={(e) => {
                             e.preventDefault()

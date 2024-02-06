@@ -43,6 +43,7 @@ export default function PokemonComponent(props: PokeProps) {
             <SelecaoPoke>
                 <label htmlFor={nome}>{nome}</label>
                 <select className='tamahodiferente' id={nome} {...register("pokémon1")} required>
+                    <option value={`Escolha seu ${nome}`}>{`Escolha seu ${nome}`}</option>
                     {pokemon && pokemon.map((i: pokemonType) => (
                         <option value={i.pokemon_species.name}>{i.pokemon_species.name}</option>
                     ))}
